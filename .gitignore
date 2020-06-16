@@ -1,0 +1,7 @@
+build
+.env
+node_modules
+*.log
+security
+venv
+test-results.xml

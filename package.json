@@ -1,0 +1,52 @@
+{
+  "name": "newcontracts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "compile": "rm -rf build/ && truffle compile",
+    "ganache": "ganache-cli -f \"http://localhost:8545\" -p \"8547\" -l 9000000 -a 20 -e 10000 -i 1 -u 0x3e71552f3CBEAE776e8369B06376576487f59eB0 -u 0x78bc49be7bae5e0eec08780c86f0e8278b8b035b -u 0x230C20B0756388DD2b3d61B787C5713c1B18656A ",
+    "test": "rm -rf build/ && truffle test",
+    "test:coverage": "truffle run coverage",
+    "lint": "eslint --ignore-path .gitignore ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "standard": {
+    "globals": [
+      "describe",
+      "context",
+      "before",
+      "beforeEach",
+      "after",
+      "afterEach",
+      "it",
+      "expect",
+      "assert"
+    ]
+  },
+  "devDependencies": {
+    "dayjs": "^1.8.28",
+    "eslint": "^7.2.0",
+    "eslint-plugin-truffle": "^0.3.1",
+    "eth-crypto": "^1.6.0",
+    "eth-ens-namehash": "^2.0.8",
+    "ethers": "^4.0.47",
+    "ethlint": "^1.2.5",
+    "ganache-cli": "^6.9.1",
+    "mocha-junit-reporter": "^2.0.0",
+    "mocha-multi-reporters": "^1.1.7",
+    "prettier": "^2.0.5",
+    "prettier-plugin-solidity": "^1.0.0-alpha.54",
+    "solc": "^0.6.10",
+    "solidity-coverage": "^0.7.5",
+    "solidity-docgen": "^0.5.3",
+    "surya": "^0.4.0",
+    "truffle": "^5.1.29"
+  }
+}
