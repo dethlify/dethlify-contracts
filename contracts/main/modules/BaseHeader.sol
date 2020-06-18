@@ -42,7 +42,7 @@ contract BaseHeader is BaseStorage {
    * @dev Only allow heir for certain actions.
    */
   modifier onlyHeir {
-    require(isHeir[msg.sender], "BH: Only Heir!");
+    require(isHeir[keccak256(abi.encodePacked(msg.sender))], "BH: Only Heir!");
     _;
   }
 
@@ -102,7 +102,7 @@ contract BaseHeader is BaseStorage {
   event WithdrawToken(address indexed heir, address indexed token);
   event StartClaimCycle(address indexed token);
   event ResetClaimCycle(address indexed token);
-  event UpdateDistribution(address[] heirs, uint256[] distributions);
+  event UpdateDistribution(bytes32[] heirs, uint256[] distributions);
   event UpdateTokenDistributions(address[] tokens, uint256[] distributions);
   event UpdateLock(uint256 lock);
   event Pulse();

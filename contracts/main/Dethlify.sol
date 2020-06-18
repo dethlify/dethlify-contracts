@@ -17,14 +17,14 @@ contract Dethlify is BaseStorage, BaseHeader {
    * @notice Construct new Dethlify contract
    * @dev reverts if the distribution does not equal to 100%
    * @param _owner the contract owner
-   * @param _heirs the contract heirs
+   * @param _heirs the hashed contract heirs
    * @param _dist the initial ETH distribution
    * @param _lock the lock period
    * @param _proxy the address of the ManagerProxy
    */
   constructor(
     address payable _owner,
-    address[] memory _heirs,
+    bytes32[] memory _heirs,
     uint256[] memory _dist,
     uint256 _lock,
     address payable _proxy

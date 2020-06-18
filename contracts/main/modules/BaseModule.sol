@@ -101,7 +101,7 @@ contract BaseModule is BaseStorage, BaseHeader {
    *
    * @return the list of heirs
    */
-  function getHeirs() public view returns (address[] memory) {
+  function getHeirs() public view returns (bytes32[] memory) {
     return heirs;
   }
 
@@ -150,6 +150,15 @@ contract BaseModule is BaseStorage, BaseHeader {
    */
   function getSetTokens() public view returns (address[] memory) {
     return setTokens;
+  }
+
+  /**
+   * @notice Get the hash of an address
+   * @param _a the address
+   * @return the hash of the address
+   */
+  function hashAddress(address _a) public pure returns (bytes32) {
+    return keccak256(abi.encodePacked(_a));
   }
 
   /**
@@ -211,13 +220,14 @@ contract BaseModule is BaseStorage, BaseHeader {
    * Allows heirs to withdraw their shares once during a claim cycle.
    */
   function _withdraw() internal {
-    require(!hasClaimedToken[ETHER][msg.sender], "W: Can only claim once during claim cycle!");
+    bytes32 heir = hashAddress(msg.sender);
+    require(!hasClaimedToken[ETHER][heir], "W: Can only claim once during claim cycle!");
     if (!tokenIsLocked[ETHER]) {
       calculateShares(ETHER, address(this).balance);
     }
     numHaveClaimedToken[ETHER]++;
-    hasClaimedToken[ETHER][msg.sender] = true;
-    uint256 share = calculatedTokenShares[ETHER][msg.sender];
+    hasClaimedToken[ETHER][heir] = true;
+    uint256 share = calculatedTokenShares[ETHER][heir];
     _transfer(msg.sender, share);
 
     if (numHaveClaimedToken[ETHER] == heirs.length) {
@@ -236,14 +246,15 @@ contract BaseModule is BaseStorage, BaseHeader {
    * @param _token the token address
    */
   function _withdrawToken(address _token) internal {
-    require(!hasClaimedToken[_token][msg.sender], "WT: Can only claim once during claim cycle!"); // prettier-ignore
+    bytes32 heir = hashAddress(msg.sender);
+    require(!hasClaimedToken[_token][heir], "WT: Can only claim once during claim cycle!"); // prettier-ignore
     IERC20 tkn = IERC20(_token);
     if (!tokenIsLocked[_token]) {
       calculateShares(_token, tkn.balanceOf(address(this)));
     }
     numHaveClaimedToken[_token]++;
-    hasClaimedToken[_token][msg.sender] = true;
-    uint256 share = calculatedTokenShares[_token][msg.sender];
+    hasClaimedToken[_token][heir] = true;
+    uint256 share = calculatedTokenShares[_token][heir];
     tkn.transfer(msg.sender, share);
 
     if (numHaveClaimedToken[_token] == heirs.length) {
@@ -292,7 +303,7 @@ contract BaseModule is BaseStorage, BaseHeader {
    * @param _distributions a list of ether distributions for each heir
    */
   function _updateHeirs(
-    address[] memory _heirs,
+    bytes32[] memory _heirs,
     address[] memory _tokens,
     uint256[] memory _distributions
   ) internal {
@@ -438,7 +449,7 @@ contract BaseModule is BaseStorage, BaseHeader {
    * @param _distributions a list of lists that represent the distributions for each heir of each token
    */
   function updateHeirs(
-    address[] memory _heirs,
+    bytes32[] memory _heirs,
     address[] memory _tokens,
     uint256[] memory _distributions
   ) public onlyOwner equalArraySize(_distributions.length, _heirs.length * _tokens.length) {
