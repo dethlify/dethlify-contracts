@@ -13,6 +13,7 @@ contract("Dethlify", async (accounts) => {
   const h3 = accounts[3];
   const h4 = accounts[4];
   const heirs = [h1, h2, h3, h4];
+  const hashedHeirs = heirs.map((h) => ethers.utils.solidityKeccak256(["address"], [h]));
   const dist = constants.dethlifyDist;
   const lock = constants.lock;
   const version = "1.0.0";
@@ -31,7 +32,7 @@ contract("Dethlify", async (accounts) => {
 
     let isEqual = true;
     for (let i = 0; i < cHeirs.length; i++) {
-      if (cHeirs[i] !== heirs[i]) {
+      if (cHeirs[i] !== hashedHeirs[i]) {
         isEqual = false;
         break;
       }
