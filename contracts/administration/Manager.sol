@@ -339,7 +339,7 @@ contract Manager is ManagerStorage, Crypto {
    */
   function deploy(
     address payable _owner,
-    address[] memory _heirs,
+    bytes32[] memory _heirs,
     uint256[] memory _dist,
     uint256 _lock,
     address payable _proxy,

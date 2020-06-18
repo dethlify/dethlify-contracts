@@ -1,5 +1,4 @@
 const ethers = require("ethers");
-require("dotenv").config({path: "../.env"});
 const constants = require("../utils/constants");
 
 async function generateSignature(subdomain, nonce) {

@@ -18,15 +18,15 @@ contract BaseStorage {
   string public version;
   uint256 public paidUntil;
   address payable public owner;
-  address[] public heirs;
+  bytes32[] public heirs;
   uint256 public lock;
   uint256 public last;
-  mapping(address => bool) internal isHeir;
+  mapping(bytes32 => bool) internal isHeir;
   mapping(address => bool) internal tokenIsLocked;
-  mapping(address => mapping(address => bool)) public hasClaimedToken; // [token][heir]
+  mapping(address => mapping(bytes32 => bool)) public hasClaimedToken; // [token][heir]
   mapping(address => uint256) public numHaveClaimedToken;
-  mapping(address => mapping(address => uint256)) public calculatedTokenShares; // [token][heir]
-  mapping(address => mapping(address => uint256)) public tokenDistribution; // [token][heir] = percentage
+  mapping(address => mapping(bytes32 => uint256)) public calculatedTokenShares; // [token][heir]
+  mapping(address => mapping(bytes32 => uint256)) public tokenDistribution; // [token][heir] = percentage
   address[] public setTokens;
   mapping(address => bool) public distributionIsSet;
   uint256 internal day = 24 * 60 * 60;

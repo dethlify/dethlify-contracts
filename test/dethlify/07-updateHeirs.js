@@ -19,7 +19,7 @@ contract("Dethlify", async (accounts) => {
 
   // POSITIVE
   it("[UPDATEHEIRS] 1.1: Update heirs and distribution", async () => {
-    let NEW_HEIRS = [heir1, heir2];
+    let NEW_HEIRS = [heir1, heir2].map((h) => ethers.utils.solidityKeccak256(["address"], [h]));
     let NEW_DIST = [50 * 100, 50 * 100, 30 * 100, 70 * 100];
     let ETH_DIST = [50 * 100, 50 * 100];
     let DAI_DIST = [30 * 100, 70 * 100];
@@ -63,7 +63,7 @@ contract("Dethlify", async (accounts) => {
   // NEGATIVE
   it("[UPDATEHEIRS] 2.2: Update heirs and distribution as non-owner", async () => {
     try {
-      let NEW_HEIRS = [heir1, heir2];
+      let NEW_HEIRS = [heir1, heir2].map((h) => ethers.utils.solidityKeccak256(["address"], [h]));
       let NEW_DIST = [50 * 100, 50 * 100];
       await dethlify.updateHeirs(NEW_HEIRS, [ETHER], NEW_DIST, {
         from: NOT_OWNER,
@@ -76,7 +76,7 @@ contract("Dethlify", async (accounts) => {
 
   it("[UPDATEHEIRS] 2.2: Update heirs and distribution messed up", async () => {
     try {
-      let NEW_HEIRS = [heir1];
+      let NEW_HEIRS = [heir1].map((h) => ethers.utils.solidityKeccak256(["address"], [h]));
       let NEW_DIST = [50 * 100, 50 * 100];
       await dethlify.updateHeirs(NEW_HEIRS, [ETHER], NEW_DIST, {from: OWNER});
       assert.equal(true, false, "Messed up!");
@@ -97,7 +97,7 @@ contract("Dethlify", async (accounts) => {
   });
 
   it("[UPDATEHEIRS] 2.3: Should have deleted all previous heirs", async () => {
-    let NEW_HEIRS = [heir1, heir2];
+    let NEW_HEIRS = [heir1, heir2].map((h) => ethers.utils.solidityKeccak256(["address"], [h]));
     let NEW_DIST = [50 * 100, 50 * 100];
     await dethlify.updateHeirs(NEW_HEIRS, [ETHER], NEW_DIST, {from: OWNER});
     let dist = await dethlify.tokenDistribution.call(ETHER, accounts[3]);

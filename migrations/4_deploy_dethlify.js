@@ -19,6 +19,7 @@ module.exports = async (deployer, network, accounts) => {
   const h3 = accounts[3];
   const h4 = accounts[4];
   const heirs = [h1, h2, h3, h4];
+  const hashedHeirs = heirs.map((h) => ethers.utils.solidityKeccak256(["address"], [h]));
   const dist = constants.dethlifyDist;
   let lock = constants.lock;
 
@@ -26,7 +27,7 @@ module.exports = async (deployer, network, accounts) => {
   let manager = await Manager.at(await proxy.getManagerImplementation());
 
   // deploy new contract
-  let transaction = await manager.deploy(dethOwner, heirs, dist, lock, proxy.address, name, nonce, sig, {from: dethOwner, value: ethers.utils.parseEther("100")});
+  let transaction = await manager.deploy(dethOwner, hashedHeirs, dist, lock, proxy.address, name, nonce, sig, {from: dethOwner, value: ethers.utils.parseEther("100")});
 
   let provider = new ethers.providers.JsonRpcProvider("http://localhost:8547");
   let tx = await provider.getTransactionReceipt(transaction.tx);

@@ -31,9 +31,10 @@ contract("Manager", async (accounts) => {
     const h3 = accounts[3];
     const h4 = accounts[4];
     const heirs = [h1, h2, h3, h4];
+    const hashedHeirs = heirs.map((h) => ethers.utils.solidityKeccak256(["address"], [h]));
     const dist = constants.dethlifyDist;
 
-    let transaction = await manager.deploy(dethOwner, heirs, dist, lock, proxy.address, name, nonce, sig, {from: dethOwner, value: ethers.utils.parseEther("100")});
+    let transaction = await manager.deploy(dethOwner, hashedHeirs, dist, lock, proxy.address, name, nonce, sig, {from: dethOwner, value: ethers.utils.parseEther("100")});
     let provider = new ethers.providers.JsonRpcProvider("http://localhost:8547");
     let tx = await provider.getTransactionReceipt(transaction.tx);
     let log = tx.logs[tx.logs.length - 1];
@@ -49,7 +50,7 @@ contract("Manager", async (accounts) => {
 
     let isEqual = true;
     for (let i = 0; i < cHeirs.length; i++) {
-      if (cHeirs[i] !== heirs[i]) {
+      if (cHeirs[i] !== hashedHeirs[i]) {
         isEqual = false;
         break;
       }

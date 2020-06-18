@@ -1,5 +1,4 @@
 "use strict";
-require("dotenv").config({path: "../.env"});
 const Manager = artifacts.require("Manager");
 const ManagerProxy = artifacts.require("ManagerProxy");
 const IERC20 = artifacts.require("IERC20");
